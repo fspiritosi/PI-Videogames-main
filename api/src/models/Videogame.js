@@ -12,10 +12,13 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description: {},
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     platforms: {
-      type: DataTypes.ARRAY,
-      allowNull: true
+      type: DataTypes.ARRAY(DataTypes.ARRAY(DataTypes.JSON)),
+      allowNull: true,
     },
     background_image: {
       type: DataTypes.STRING,
@@ -23,11 +26,14 @@ module.exports = (sequelize) => {
     },
     released: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
-    rating:{
-      type:DataTypes.FLOAT,
-      allowNull: false
+    rating: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
     },
+  },
+  {
+    timestaps: false
   });
 };
