@@ -1,5 +1,9 @@
+require('dotenv').config()
 const axios = require('axios')
-// const Videogame =require('../models/Videogame')
+const Videogame =require('../models/Videogame.js')
+const Genres = require('../models/Genres.js')
+const { URL_API, KEY_API } = process.env
+
 
 async function getApiData(){
     try {
@@ -8,7 +12,8 @@ async function getApiData(){
 
         for(let i = 1; i < 6; i++){
           const apiData = await axios.get(
-            `https://api.rawg.io/api/games?key=14792875481148a1bb7bc5a7aa1714cd&page=${i}`
+            `${URL_API}?key=${KEY_API}&page=${i}`
+            // `https://api.rawg.io/api/games?key=14792875481148a1bb7bc5a7aa1714cd&page=${i}`
           );
           allVideoGamesApiData.push(apiData)
         }
@@ -41,11 +46,12 @@ async function getApiData(){
 async function getVideogameById(id){
   try {
     const videogameID = await axios.get(
-      `https://api.rawg.io/api/games/${id}?key=14792875481148a1bb7bc5a7aa1714cd`
+      `${URL_API}/${id}?key=${KEY_API}`
+      // `https://api.rawg.io/api/games/${id}?key=14792875481148a1bb7bc5a7aa1714cd`
     );
     
     let vgIdUnique = videogameID.data;
-    console.log(vgIdUnique)
+    
 
     return {
       id: vgIdUnique.id,
