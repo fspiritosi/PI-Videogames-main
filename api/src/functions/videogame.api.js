@@ -1,7 +1,6 @@
 require('dotenv').config()
 const axios = require('axios')
-const Videogame =require('../models/Videogame.js')
-const Genres = require('../models/Genres.js')
+const { Videogame, Genres } = require('../db.js')
 const { URL_API, KEY_API } = process.env
 
 
@@ -13,7 +12,6 @@ async function getApiData(){
         for(let i = 1; i < 6; i++){
           const apiData = await axios.get(
             `${URL_API}?key=${KEY_API}&page=${i}`
-            // `https://api.rawg.io/api/games?key=14792875481148a1bb7bc5a7aa1714cd&page=${i}`
           );
           allVideoGamesApiData.push(apiData)
         }
@@ -43,6 +41,27 @@ async function getApiData(){
     }
 }
 
+const getDBdata = async() => {
+  return await Videogame.findAll({
+    include: {
+      model: Genres,
+      attributes: ["name"],
+      through: {
+        attributes: [],
+      },
+    },
+  });
+}
+
+const getAllvideogames = async () => {
+  const apiInfo = await getApiData();
+  const dbInfo = await getDBdata();
+  const allInfo = [...apiInfo, ...dbInfo]
+
+  return allInfo;
+}
+
+
 async function getVideogameById(id){
   try {
     const videogameID = await axios.get(
@@ -70,4 +89,4 @@ async function getVideogameById(id){
 }
 
 
-module.exports = { getApiData, getVideogameById }
+module.exports = { getAllvideogames ,getApiData, getVideogameById }

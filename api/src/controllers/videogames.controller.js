@@ -2,13 +2,14 @@ const { Videogame } = require("../db.js");
 const {
   getApiData,
   getVideogameById,
+  getAllvideogames
 } = require("../functions/videogame.api.js");
 
 //GET
 
 const getVideogames = async (req, res) => {
   try {
-    const allVgames = await getApiData();
+    const allVgames = await getAllvideogames();
     res.status(200).json(allVgames);
   } catch (error) {
     return res.status(400).json({ message: error.message });
